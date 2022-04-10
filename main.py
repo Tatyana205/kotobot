@@ -69,8 +69,8 @@ def upload_memes():
 
 def statistics():
     i = list(data['users']).index(str(float(event.message.from_id)))
-    l = len([x for x in range(19, 69) if data[str(x)][i] == 'True'])
-    d = len([x for x in range(19, 69) if data[str(x)][i] == 'False'])
+    l = len([x for x in range(19, 69) if str(data[str(x)][i]) == 'True'])
+    d = len([x for x in range(19, 69) if str(data[str(x)][i]) == 'False'])
     msg(f'Количество лайков: {l}\nКоличество дизлайков: {d}', keyboard.get_empty_keyboard())
 
 
@@ -78,111 +78,112 @@ meme_id = 0
 longpoll = VkBotLongPoll(vk_session, 212547487)
 vk = vk_session.get_api()
 while True:
-    for event in longpoll.listen():
-        if event.type == VkBotEventType.MESSAGE_NEW:
-            if event.message.payload:
-                if event.message.payload == '1':
-                    msg('1. Какого цвета сделать кнопки?', keyboard1.get_keyboard())
-                elif event.message.payload == '10':
-                    color = VkKeyboardColor.PRIMARY
-                elif event.message.payload == '11':
-                    color = VkKeyboardColor.SECONDARY
-                elif event.message.payload == '12':
-                    color = VkKeyboardColor.NEGATIVE
-                elif event.message.payload == '13':
-                    color = VkKeyboardColor.POSITIVE
-                if (event.message.payload == '10') or (event.message.payload == '11') or (
-                        event.message.payload == '12') or (event.message.payload == '13'):
-                    keyboard2 = VkKeyboard(one_time=True)
-                    keyboard2.add_button('Положительно', color=color, payload='20')
-                    keyboard2.add_button('Нейтрально', color=color, payload='21')
-                    keyboard2.add_line()
-                    keyboard2.add_button('Отношусь', color=color, payload='22')
-                    msg('2. Как вы относитесь к котикам?', keyboard2.get_keyboard())
-                elif event.message.payload == '20':
-                    msg('Это прекрасно! Значит, мы можем подружиться)', keyboard.get_empty_keyboard())
-                elif event.message.payload == '21':
-                    msg('Я вас понял', keyboard.get_empty_keyboard())
-                elif event.message.payload == '22':
-                    msg('Получается, мы родные души)', keyboard.get_empty_keyboard())
-                if (event.message.payload == '20') or (event.message.payload == '21') or (
-                        event.message.payload == '22'):
-                    keyboard3_1 = VkKeyboard(one_time=True)
-                    keyboard3_1.add_button('Да', color=color, payload='30')
-                    keyboard3_1.add_button('Нет', color=color, payload='31')
-                    msg('3. Готовы рассказать о том, где вы сейчас находитесь?', keyboard3_1.get_keyboard())
-                elif event.message.payload == '30':
-                    keyboard3_2 = VkKeyboard(one_time=True)
-                    keyboard3_2.add_location_button(payload='32')
-                    msg('Тогда можете поделиться своей геопозицией', keyboard3_2.get_keyboard())
-                elif event.message.payload == '31':
-                    msg('Тогда перейдём к следующему вопросу', keyboard.get_empty_keyboard())
-                elif event.message.payload == '32':
-                    msg('Хорошо, что расстояние не мешает нашему общению', keyboard.get_empty_keyboard())
-                if (event.message.payload == '31') or (event.message.payload == '32'):
-                    keyboard4 = VkKeyboard(one_time=True)
-                    keyboard4.add_openlink_button(label='Открыть видосик',
+    try:
+        for event in longpoll.listen():
+            if event.type == VkBotEventType.MESSAGE_NEW:
+                if event.message.payload:
+                    if event.message.payload == '1':
+                        msg('1. Какого цвета сделать кнопки?', keyboard1.get_keyboard())
+                    elif event.message.payload == '10':
+                        color = VkKeyboardColor.PRIMARY
+                    elif event.message.payload == '11':
+                        color = VkKeyboardColor.SECONDARY
+                    elif event.message.payload == '12':
+                        color = VkKeyboardColor.NEGATIVE
+                    elif event.message.payload == '13':
+                        color = VkKeyboardColor.POSITIVE
+                    if (event.message.payload == '10') or (event.message.payload == '11') or (
+                            event.message.payload == '12') or (event.message.payload == '13'):
+                        keyboard2 = VkKeyboard(one_time=True)
+                        keyboard2.add_button('Положительно', color=color, payload='20')
+                        keyboard2.add_button('Нейтрально', color=color, payload='21')
+                        keyboard2.add_line()
+                        keyboard2.add_button('Отношусь', color=color, payload='22')
+                        msg('2. Как вы относитесь к котикам?', keyboard2.get_keyboard())
+                    elif event.message.payload == '20':
+                        msg('Это прекрасно! Значит, мы можем подружиться)', keyboard.get_empty_keyboard())
+                    elif event.message.payload == '21':
+                        msg('Я вас понял', keyboard.get_empty_keyboard())
+                    elif event.message.payload == '22':
+                        msg('Получается, мы родные души)', keyboard.get_empty_keyboard())
+                    if (event.message.payload == '20') or (event.message.payload == '21') or (
+                            event.message.payload == '22'):
+                        keyboard3_1 = VkKeyboard(one_time=True)
+                        keyboard3_1.add_button('Да', color=color, payload='30')
+                        keyboard3_1.add_button('Нет', color=color, payload='31')
+                        msg('3. Готовы рассказать о том, где вы сейчас находитесь?', keyboard3_1.get_keyboard())
+                    elif event.message.payload == '30':
+                        keyboard3_2 = VkKeyboard(one_time=True)
+                        keyboard3_2.add_location_button(payload='32')
+                        msg('Тогда можете поделиться своей геопозицией', keyboard3_2.get_keyboard())
+                    elif event.message.payload == '31':
+                        msg('Тогда перейдём к следующему вопросу', keyboard.get_empty_keyboard())
+                    elif event.message.payload == '32':
+                        msg('Хорошо, что расстояние не мешает нашему общению', keyboard.get_empty_keyboard())
+                    if (event.message.payload == '31') or (event.message.payload == '32'):
+                        keyboard4 = VkKeyboard(one_time=True)
+                        keyboard4.add_openlink_button(label='Открыть видосик',
                                                   link='https://vk.com/video-130936589_456240749')
-                    keyboard4.add_button('Следующий пункт', color=color, payload='40')
-                    msg('4. Предлагаю отвлечься от дел и посмотреть на котика', keyboard4.get_keyboard())
-                if event.message.payload == '40':
-                    keyboard5 = VkKeyboard(one_time=True)
-                    keyboard5.add_callback_button(label='Посмотреть сообщение',
+                        keyboard4.add_button('Следующий пункт', color=color, payload='40')
+                        msg('4. Предлагаю отвлечься от дел и посмотреть на котика', keyboard4.get_keyboard())
+                    if event.message.payload == '40':
+                        keyboard5 = VkKeyboard(one_time=True)
+                        keyboard5.add_callback_button(label='Посмотреть сообщение',
                                                   color=color,
                                                   payload={'type': 'show_snackbar', 'text': 'Мур'})
-                    msg('5. У меня есть для вас сообщение', keyboard5.get_keyboard())
-                if event.message.payload == '60':
-                    keyboard7 = VkKeyboard(one_time=True)
-                    keyboard7.add_vkpay_button(hash='action=transfer-to-group&group_id=212547487', payload='70')
-                    keyboard7.add_line()
-                    keyboard7.add_button('В другой раз', color=color, payload='71')
-                    msg('7. Вы непротив порадовать Котокодеров монеткой?', keyboard7.get_keyboard())
-                elif event.message.payload == '70':
-                    msg('Мурси)', keyboard.get_empty_keyboard())
-                if (event.message.payload == '70') or (event.message.payload == '71'):
-                    keyboard8 = VkKeyboard(one_time=True)
-                    keyboard8.add_button('До встречи!', color=color, payload='8')
-                    msg('8. Было очень приятно пообщаться с вами!', keyboard8.get_keyboard())
-                if event.message.payload == '8':
-                    msg('🐾', keyboard.get_empty_keyboard())
-                elif event.message.payload == '2':
-                    meme_id = upload_memes()
-                elif event.message.payload == '90':
-                    data[str(meme_id[0])][meme_id[1]] = 'True'
-                    data.to_csv(r'data.csv')
-                    # at.remove(meme_id)
-                elif event.message.payload == '91':
-                    data[str(meme_id[0])][meme_id[1]] = 'False'
-                    data.to_csv(r'data.csv')
-                    # at.remove(meme_id)
-                elif event.message.payload == '3':
-                    statistics()
-            else:
-                if event.message.text.lower() == 'привет':
-                    msg('Привет вездекодерам!', keyboard.get_keyboard())
-                elif event.message.text.lower() == 'мем':
-                    meme_id = upload_memes()
-                elif event.message.text.lower() == 'статистика':
-                    statistics()
+                        msg('5. У меня есть для вас сообщение', keyboard5.get_keyboard())
+                    if event.message.payload == '60':
+                        keyboard7 = VkKeyboard(one_time=True)
+                        keyboard7.add_vkpay_button(hash='action=transfer-to-group&group_id=212547487', payload='70')
+                        keyboard7.add_line()
+                        keyboard7.add_button('В другой раз', color=color, payload='71')
+                        msg('7. Вы непротив порадовать Котокодеров монеткой?', keyboard7.get_keyboard())
+                    elif event.message.payload == '70':
+                        msg('Мурси)', keyboard.get_empty_keyboard())
+                    if (event.message.payload == '70') or (event.message.payload == '71'):
+                        keyboard8 = VkKeyboard(one_time=True)
+                        keyboard8.add_button('До встречи!', color=color, payload='8')
+                        msg('8. Было очень приятно пообщаться с вами!', keyboard8.get_keyboard())
+                    if event.message.payload == '8':
+                        msg('🐾', keyboard.get_empty_keyboard())
+                    elif event.message.payload == '2':
+                        meme_id = upload_memes()
+                    elif event.message.payload == '90':
+                        data[str(meme_id[0])][meme_id[1]] = 'True'
+                        data.to_csv(r'data.csv')
+                    elif event.message.payload == '91':
+                        data[str(meme_id[0])][meme_id[1]] = 'False'
+                        data.to_csv(r'data.csv')
+                    elif event.message.payload == '3':
+                        statistics()
                 else:
-                    msg('Я пока не знаю, что тебе ответить, но я работаю над этим', keyboard.get_empty_keyboard())
-        else:
-            if event.object.payload.get('type') == 'show_snackbar':
-                vk.messages.send_message_event_answer(
-                    event_id=event.object.event_id,
-                    user_id=event.object.user_id,
-                    random_id=get_random_id(),
-                    peer_id=event.object.peer_id,
-                    event_data=json.dumps(event.object.payload))
+                    if event.message.text.lower() == 'привет':
+                        msg('Привет вездекодерам!', keyboard.get_keyboard())
+                    elif event.message.text.lower() == 'мем':
+                        meme_id = upload_memes()
+                    elif event.message.text.lower() == 'статистика':
+                        statistics()
+                    else:
+                        msg('Я пока не знаю, что тебе ответить, но я работаю над этим', keyboard.get_empty_keyboard())
+            else:
+                if event.object.payload.get('type') == 'show_snackbar':
+                    vk.messages.send_message_event_answer(
+                        event_id=event.object.event_id,
+                        user_id=event.object.user_id,
+                        random_id=get_random_id(),
+                        peer_id=event.object.peer_id,
+                        event_data=json.dumps(event.object.payload))
 
-                keyboard6 = VkKeyboard(one_time=True)
-                keyboard6.add_vkapps_button(label='Вперёд за идеями', app_id=7598034,
+                    keyboard6 = VkKeyboard(one_time=True)
+                    keyboard6.add_vkapps_button(label='Вперёд за идеями', app_id=7598034,
                                             owner_id=197700721, hash='')
-                keyboard6.add_button('Двигаемся дальше', color=color, payload='60')
+                    keyboard6.add_button('Двигаемся дальше', color=color, payload='60')
 
-                vk.messages.send(
-                    user_id=event.object.user_id,
-                    random_id=get_random_id(),
-                    message='6. Как насчёт генерации идеи для стартапа?',
-                    keyboard=keyboard6.get_keyboard()
-                )
+                    vk.messages.send(
+                        user_id=event.object.user_id,
+                        random_id=get_random_id(),
+                        message='6. Как насчёт генерации идеи для стартапа?',
+                        keyboard=keyboard6.get_keyboard()
+                    )
+    except:
+        msg('Я пока не знаю, что тебе ответить, но я работаю над этим', keyboard.get_empty_keyboard())
