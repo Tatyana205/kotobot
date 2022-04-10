@@ -148,11 +148,11 @@ while True:
                 elif event.message.payload == '2':
                     meme_id = upload_memes()
                 elif event.message.payload == '90':
-                    data[str(meme_id[0])][meme_id[1]] = True
+                    data[str(meme_id[0])][meme_id[1]] = 'True'
                     data.to_csv(r'data.csv')
                     # at.remove(meme_id)
                 elif event.message.payload == '91':
-                    data[str(meme_id[0])][meme_id[1]] = False
+                    data[str(meme_id[0])][meme_id[1]] = 'False'
                     data.to_csv(r'data.csv')
                     # at.remove(meme_id)
                 elif event.message.payload == '3':
