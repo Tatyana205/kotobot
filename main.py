@@ -1,15 +1,11 @@
-import random
 import json
-import csv
-from math import nan
+import random
 
-import vk_api
-import numpy as np
 import pandas as pd
-import dask.dataframe as dd
+import vk_api
 from vk_api.bot_longpoll import VkBotLongPoll, VkBotEventType
-from vk_api.utils import get_random_id
 from vk_api.keyboard import VkKeyboard, VkKeyboardColor
+from vk_api.utils import get_random_id
 
 vk_session = vk_api.VkApi(token='4b2134ee4257eb8d3754b172bdcbb5f559a81f23327905aa9e00d52c4c383f615796b4cd7dc9dafbcff16')
 
@@ -32,25 +28,13 @@ keyboard9 = VkKeyboard(one_time=True)
 keyboard9.add_button('👍', color=VkKeyboardColor.SECONDARY, payload='90')
 keyboard9.add_button('👎', color=VkKeyboardColor.SECONDARY, payload='91')
 
-attachment = dict.fromkeys(range(19, 69), 0)
-#at = [x for x in attachment.keys() if attachment[x] is None]
+attachment = dict.fromkeys(range(19, 69))
 
 data = pd.read_csv('data.csv', encoding='ISO-8859-1')
-#data = pd.DataFrame(data=[list(attachment.values())], columns=list(attachment.keys()))
-#data.index.name = 'users'
-#data.to_csv(r'data.csv', index=False)
-#data.insert(loc=0, column='users', value=-1)
-#data.to_csv(r'data.csv', index=False)
-# d = [0] * 50
 print(data)
-#data.loc[2] = ['else'] + [0]*50
-#data.to_csv(r'data.csv')
-#print(data['19'][1])
-#print(list(data['users']).index('else'))
-#print(data['19'])
 
 
-# ToDo Try
+# ToDo Try except
 
 def msg(message, kb):
     vk.messages.send(
@@ -63,14 +47,11 @@ def msg(message, kb):
 
 def upload_memes():
     if str(float(event.message.from_id)) not in list(data['users']):
-        # print(int(event.message.from_id))
-        # data.loc[int(event.message.from_id)] = [None] * 51
-        #appended = data.append([[int(event.message.from_id)] + [None]*50], ignore_index=True)
-        #print(appended)
-        data.loc[len(data)] = [int(event.message.from_id)] + [None] * 50
-        data.to_csv(r'data.csv')
-    i = list(data['users']).index(str(float(event.message.from_id)))
-    at = [x for x in range(19, 69) if data[str(x)][i] is 'None']
+        data.loc[len(data)] = [float(event.message.from_id)] + ['None'] * 50
+        data.to_csv(r'data.csv', index=False)
+    print(data['users'])
+    i = list(data['users']).index(float(event.message.from_id))
+    at = [x for x in range(19, 69) if (data[str(x)][i] != 'True') and (data[str(x)][i] != 'False')]
     if len(at) != 0:
         rand = random.choice(at)
         vk.messages.send(
@@ -80,11 +61,11 @@ def upload_memes():
             attachment=f'photo-212547487_4572390{rand}',
             keyboard=keyboard9.get_keyboard()
         )
-        # at.remove(rand)
         return rand, i
     else:
         msg('Пока вы посмотрели все мемы, жду вас позже', keyboard.get_empty_keyboard())
         return None
+
 
 def statistics():
     i = list(data['users']).index(str(float(event.message.from_id)))
@@ -169,11 +150,11 @@ while True:
                 elif event.message.payload == '90':
                     data[str(meme_id[0])][meme_id[1]] = True
                     data.to_csv(r'data.csv')
-                    #at.remove(meme_id)
+                    # at.remove(meme_id)
                 elif event.message.payload == '91':
                     data[str(meme_id[0])][meme_id[1]] = False
                     data.to_csv(r'data.csv')
-                    #at.remove(meme_id)
+                    # at.remove(meme_id)
                 elif event.message.payload == '3':
                     statistics()
             else:
@@ -181,7 +162,6 @@ while True:
                     msg('Привет вездекодерам!', keyboard.get_keyboard())
                 elif event.message.text.lower() == 'мем':
                     meme_id = upload_memes()
-                    print(meme_id[0], meme_id[1])
                 elif event.message.text.lower() == 'статистика':
                     statistics()
                 else:
